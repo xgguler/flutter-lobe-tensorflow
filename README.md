@@ -1,10 +1,10 @@
-# demo_app
+# Lobe AI with flutter
 
 A new Flutter application.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a starting point for a Flutter application with Lobe AI implementation.
 
 A few resources to get you started if this is your first Flutter project:
 
