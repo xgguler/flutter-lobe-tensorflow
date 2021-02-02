@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var resultOnImage = await Tflite.runModelOnBinary(
       binary: imageToByteListFloat32(oriImage, 224, 127.5, 127.5), // required
       numResults: 2, // defaults to 5
-      threshold: 0.1, // defaults to 0.1
+      threshold: 0.05, // defaults to 0.1
       asynch: true, // defaults to true
     );
 
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Lobe AI - Tensorflow Lite Demo',
+          'Lobe AI - Tensorflow Lite',
         ),
       ),
       body: Container(
