@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image/image.dart' as img;
@@ -38,19 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
   applyModelOnImage(File file) async {
     var imageBytes = file.readAsBytesSync();
     img.Image oriImage = img.decodeJpg(imageBytes);
-    img.Image resizedImage = img.copyResize(oriImage, height: 224, width: 224);
     var resultOnImage = await Tflite.runModelOnBinary(
-        binary: imageToByteListFloat32(oriImage, 224, 127.5, 127.5), // required
-        numResults: 2, // defaults to 5
-        threshold: 0.1, // defaults to 0.1
-        asynch: true // defaults to true
-        );
+      binary: imageToByteListFloat32(oriImage, 224, 127.5, 127.5), // required
+      numResults: 2, // defaults to 5
+      threshold: 0.1, // defaults to 0.1
+      asynch: true, // defaults to true
+    );
 
     setState(() {
       _result = resultOnImage;
       name = _result[0]["label"];
       confidence =
-          (_result[0]["confidence"] * 100).toString().substring(0, 4) + "%";
+          (_result[0]["confidence"] * 100).toString().substring(0, 5) + "%";
       print('result');
       print(_result);
     });
@@ -110,14 +108,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             isImageLoaded
                 ? Center(
-                    child: Container(
-                      height: 350,
-                      width: 350,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: FileImage(File(pickedImage.path)),
-                        fit: BoxFit.contain,
-                      )),
+                    child: AspectRatio(
+                      aspectRatio: 224 / 224,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: FileImage(File(pickedImage.path)),
+                          alignment: FractionalOffset.topCenter,
+                          fit: BoxFit.fitWidth,
+                        )),
+                      ),
                     ),
                   )
                 : Container(),
